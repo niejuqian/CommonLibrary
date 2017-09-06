@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+
+def presentationDependencies = rootProject.ext.presentationDependencies;
+android {
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            buildConfigField("boolean","LOG_DEBUG",LOG_DEBUG)
+            buildConfigField("String","ENVIRONMENT","\"" + ENVIRONMENT + "\"")
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled false
+            buildConfigField("boolean","LOG_DEBUG",LOG_DEBUG)
+            buildConfigField("String","ENVIRONMENT","\"" + ENVIRONMENT + "\"")
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JAVA_VERSION
+        targetCompatibility JAVA_VERSION
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile presentationDependencies.appcompatV7
+    compile presentationDependencies.appcompatV4
+    compile presentationDependencies.gson
+    compile presentationDependencies.glide
+    compile presentationDependencies.zxing
+    compile presentationDependencies.bingoogolappleQr
+    compile presentationDependencies.bingoogolappleZxing
+    compile presentationDependencies.okhttp
+    compile presentationDependencies.okio
+    compile presentationDependencies.recyclerviewV7
+    compile presentationDependencies.butterknife
+    compile presentationDependencies.retrofit
+    compile presentationDependencies.retrofit2ConverterGson
+    compile presentationDependencies.okhttp3LoggingInterceptor
+    compile presentationDependencies.rxjava
+    compile presentationDependencies.rxandroid
+    compile presentationDependencies.retrofit2AdapterRxjava
+}
