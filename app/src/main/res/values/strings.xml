@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CommonLibrary</string>
+    <string name="fail_reason_title">银行卡信息填写错误。\n请您与开通业务的业务人员联系，并提供正确的银行卡信息（户名、银行卡号、开户行、联行号）</string>
 </resources>

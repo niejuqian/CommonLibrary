@@ -1,0 +1,86 @@
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+
+    <item
+        android:drawable="@mipmap/loading_mine_01"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_02"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_03"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_04"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_05"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_06"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_07"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_08"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_09"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_10"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_11"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_12"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_13"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_14"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_15"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_16"
+        android:duration="50" />
+
+    <item
+        android:drawable="@mipmap/loading_mine_17"
+        android:duration="50" />
+
+    <item
+        android:drawable="@mipmap/loading_mine_18"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_19"
+        android:duration="50" />
+
+    <item
+        android:drawable="@mipmap/loading_mine_20"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_21"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_22"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_23"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_24"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_25"
+        android:duration="50" />
+    <item
+        android:drawable="@mipmap/loading_mine_26"
+        android:duration="200" />
+
+</animation-list>

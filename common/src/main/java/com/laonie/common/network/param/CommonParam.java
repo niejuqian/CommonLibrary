@@ -8,22 +8,22 @@ package com.laonie.common.network.param;
  */
 
 public class CommonParam {
-    private CommonHeaderParam headerParam;
-    private CommonQueryParam queryParam;
+    private BaseCommonHeaderParam headerParam;
+    private BaseCommonQueryParam queryParam;
 
-    public CommonHeaderParam getHeaderParam() {
+    public BaseCommonHeaderParam getHeaderParam() {
         return headerParam;
     }
 
-    public void setHeaderParam(CommonHeaderParam headerParam) {
+    public void setHeaderParam(BaseCommonHeaderParam headerParam) {
         this.headerParam = headerParam;
     }
 
-    public CommonQueryParam getQueryParam() {
+    public BaseCommonQueryParam getQueryParam() {
         return queryParam;
     }
 
-    public void setQueryParam(CommonQueryParam queryParam) {
+    public void setQueryParam(BaseCommonQueryParam queryParam) {
         this.queryParam = queryParam;
     }
 

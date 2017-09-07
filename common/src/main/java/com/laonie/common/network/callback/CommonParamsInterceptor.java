@@ -5,10 +5,9 @@ import android.util.Log;
 import com.laonie.common.annotation.FormBodyParam;
 import com.laonie.common.annotation.HeaderParam;
 import com.laonie.common.annotation.QueryParam;
-import com.laonie.common.network.param.CommonHeaderParam;
+import com.laonie.common.network.param.BaseCommonHeaderParam;
+import com.laonie.common.network.param.BaseCommonQueryParam;
 import com.laonie.common.network.param.CommonParam;
-import com.laonie.common.network.param.CommonQueryParam;
-import com.laonie.common.util.DeviceUtil;
 import com.laonie.common.util.JsonUtils;
 import com.laonie.common.util.Logger;
 import com.laonie.common.util.StringUtils;
@@ -47,8 +46,6 @@ public class CommonParamsInterceptor implements Interceptor {
         Request.Builder requestBuilder = request.newBuilder();
         try {
             HttpUrl.Builder httpBuilder = request.url().newBuilder();
-            //更新公共参数
-            updateHeaderParams(httpBuilder.toString());
             //封装公共请求参数到header中
             buildHeaderParams(requestBuilder);
             //封装公共请求参数到url后面
@@ -100,7 +97,7 @@ public class CommonParamsInterceptor implements Interceptor {
 
     private void buildFormParams(FormBody.Builder builder,HashMap<String,String> rootMap) throws IllegalAccessException {
         if (null != commonParam && commonParam.getQueryParam() != null) {
-            CommonQueryParam queryParam = commonParam.getQueryParam();
+            BaseCommonQueryParam queryParam = commonParam.getQueryParam();
             Field[] fields = queryParam.getClass().getDeclaredFields();
             if (null != fields && fields.length > 0) {
                 for (int i = 0; i < fields.length; i++) {
@@ -136,7 +133,7 @@ public class CommonParamsInterceptor implements Interceptor {
      */
     private void buildQueryParams(HttpUrl.Builder builder) throws IllegalAccessException {
         if (null != commonParam && commonParam.getQueryParam() != null) {
-            CommonQueryParam queryParam = commonParam.getQueryParam();
+            BaseCommonQueryParam queryParam = commonParam.getQueryParam();
             Field[] fields = queryParam.getClass().getDeclaredFields();
             if (null != fields && fields.length > 0) {
                 for (int i = 0; i < fields.length; i++) {
@@ -160,7 +157,7 @@ public class CommonParamsInterceptor implements Interceptor {
      */
     private void buildHeaderParams(Request.Builder builder) throws IllegalAccessException {
         if (null != commonParam && null != commonParam.getHeaderParam()) {
-            CommonHeaderParam headerParam = commonParam.getHeaderParam();
+            BaseCommonHeaderParam headerParam = commonParam.getHeaderParam();
             Field[] fields = headerParam.getClass().getDeclaredFields();
             if (null != fields && fields.length > 0) {
                 for (int i = 0; i < fields.length; i++) {
@@ -183,35 +180,6 @@ public class CommonParamsInterceptor implements Interceptor {
      */
     public void updateParams(CommonParam commonParam) {
         this.commonParam = commonParam;
-    }
-
-    /**
-     * 更新公共请求header参数
-     */
-    private void updateHeaderParams(String url){
-        boolean headerFlag = false;
-        if (headerFlag= (null == commonParam)) {
-            commonParam = new CommonParam();
-        }
-        boolean queryFlag = headerFlag;
-        CommonHeaderParam headerParam = commonParam.getHeaderParam();
-        if (headerFlag = (null == headerParam)) {
-            headerParam = new CommonHeaderParam();
-            headerParam.setAppVersion(DeviceUtil.getVersionName());
-        }
-        if (headerFlag) {
-            commonParam.setHeaderParam(headerParam);
-        }
-        //现在没有公共的查询参数，后面有了再放开
-        /*CommonQueryParam queryParam = commonParam.getQueryParam();
-        if (queryFlag = (null == queryParam)) {
-            queryParam = new CommonQueryParam();
-        }
-        queryParam.setStore_id(StoreManager.getSingleton().getStoreId());
-        if (queryFlag) {
-            commonParam.setQueryParam(queryParam);
-        }*/
-
     }
 
     private static String bodyToString(final RequestBody request){

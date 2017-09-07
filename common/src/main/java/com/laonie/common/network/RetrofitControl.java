@@ -2,12 +2,11 @@ package com.laonie.common.network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.laonie.common.BuildConfig;
-import com.laonie.common.Constant;
-import com.laonie.common.enuns.ServiceEnvEnum;
 import com.laonie.common.network.callback.CommonParamsInterceptor;
 import com.laonie.common.network.param.CommonParam;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -29,12 +28,9 @@ public class RetrofitControl {
     private CommonParamsInterceptor commonParamsInterceptor;
     private Gson gson;
     private static final int TIME_OUT_TIME = 10;//超时时间
-    private ServiceApi service;
     private Retrofit retrofit;
-    public static ServiceEnvEnum seviceEnvEnum;
-    static {
-        seviceEnvEnum = ServiceEnvEnum.getByKey(BuildConfig.ENVIRONMENT);
-    }
+    private RetrofitBuilder builder;
+    private static Map<String, Object> map = new HashMap<>();
 
     private RetrofitControl(){
         commonParamsInterceptor = new CommonParamsInterceptor();
@@ -49,32 +45,37 @@ public class RetrofitControl {
                 .writeTimeout(TIME_OUT_TIME,TimeUnit.SECONDS);
         okHttpClient = httpBuilder.build();
         gson = new GsonBuilder().serializeNulls().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
-        initRegrofit(seviceEnvEnum.getKey());
     }
-    public static RetrofitControl getInstance(){
+    public static RetrofitControl getSingleton(){
         return SingletonHolder.singleton;
     }
     private static class SingletonHolder{
         private final static RetrofitControl singleton = new RetrofitControl();
     }
-    public void initRegrofit(String key){
-        seviceEnvEnum = ServiceEnvEnum.getByKey(key);
-        String http = Constant.HTTP + seviceEnvEnum.getHost() +"/";
+    public void initRegrofit(RetrofitBuilder builder){
+        if (null == builder) {
+            throw new NullPointerException("必要参数为空，请传入builder信息");
+        }
+        this.builder = builder;
         retrofit = new Retrofit.Builder()
-                .baseUrl(http)//
+                .baseUrl(builder.getHostAddress())//
                 .client(okHttpClient)//底层使用的http请求框架
                 .addConverterFactory(GsonConverterFactory.create(gson))//数据转换
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())//添加rx支持
                 .build();
-        service = createApi(ServiceApi.class);
+        map.put(builder.getApiClass().getName(), retrofit.create(builder.getApiClass()));
+        updateCommParams(builder.getCommonParam());
     }
 
-    public <T> T createApi(Class<T> clazz) {
-        return retrofit.create(clazz);
-    }
-
-    public ServiceApi getService(){
-        return service;
+    public <w> w getServiceApi(Class<w> wClass) {
+        if(map.size() == 0) {
+            RetrofitControl.getSingleton().initRegrofit(RetrofitControl.getSingleton().getBuilder());
+        }
+        if (map.containsKey(wClass.getName())) {
+            return (w) map.get(wClass.getName());
+        } else {
+            throw new IllegalArgumentException("Api为空，可能没有进行初始化！");
+        }
     }
 
     /**
@@ -83,5 +84,9 @@ public class RetrofitControl {
      */
     public void updateCommParams(CommonParam params){
         this.commonParamsInterceptor.updateParams(params);
+    }
+
+    public RetrofitBuilder getBuilder(){
+        return this.builder;
     }
 }

@@ -61,27 +61,6 @@ public class DateUtils {
             return dateStr;
         }
     }
-    /**
-     * 功能描述：获取当前系统时间
-     *
-     * @param parse 时间格式
-     * @return
-     * @throws ParseException <p>
-     *                        修改历史 ：(修改人，修改时间，修改原因/内容)
-     *                        </p>
-     * @author bingzhong.qin
-     * <p>
-     * 创建日期 ：2014-1-2 下午2:35:54
-     * </p>
-     */
-    public static Date getCurrentDate(String parse) throws ParseException {
-
-        if (StringUtils.isBlank(parse)) {
-            parse = DATETIME_FORMAT;
-        }
-        SimpleDateFormat df = new SimpleDateFormat(parse);
-        return parse(df.format(new Date()), parse);
-    }
 
     /**
      * 功能描述：string 转换成date，默认模式
@@ -765,5 +744,25 @@ public class DateUtils {
      */
     public static boolean isThisMonth(String dateStr) {
         return StringUtils.isNotEmpty(dateStr) && dateStr.equals(getMonthFirstDate(DateUtils.getMontAfterFirsetDay(0)));
+    }
+
+
+    /**
+     * 描述：获取表示当前日期时间的字符串.
+     *
+     * @param format  格式化字符串，如："yyyy-MM-dd HH:mm:ss"
+     * @return String String类型的当前日期时间
+     */
+    public static String getCurrentDate(String format) {
+        String curDateTime = null;
+        try {
+            SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat(format);
+            Calendar c = new GregorianCalendar();
+            curDateTime = mSimpleDateFormat.format(c.getTime());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return curDateTime;
+
     }
 }

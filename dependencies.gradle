@@ -4,7 +4,6 @@ ext{
     MIN_SDK_VERSION=14
     TARGET_SDK_VERSION=26
     LOG_DEBUG = "true" // false true
-    ENVIRONMENT = "test" // test dev pre online
 
     JAVA_VERSION=org.gradle.api.JavaVersion.VERSION_1_8
 

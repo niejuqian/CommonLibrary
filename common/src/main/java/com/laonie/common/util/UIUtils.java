@@ -1,6 +1,7 @@
 package com.laonie.common.util;
 
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Paint;
@@ -12,6 +13,7 @@ import android.text.SpannedString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.laonie.common.view.refresh.AbAppConfig;
 
 import java.lang.reflect.Method;
 
@@ -269,8 +273,142 @@ public class UIUtils {
         return builder;
     }
 
+    /**
+     * 设置PX padding.
+     *
+     * @param view the view
+     * @param left the left padding in pixels
+     * @param top the top padding in pixels
+     * @param right the right padding in pixels
+     * @param bottom the bottom padding in pixels
+     */
+    public static void setPadding(View view, int left,
+                                  int top, int right, int bottom) {
+        int scaledLeft = scaleValue(view.getContext(), left);
+        int scaledTop = scaleValue(view.getContext(), top);
+        int scaledRight = scaleValue(view.getContext(), right);
+        int scaledBottom = scaleValue(view.getContext(), bottom);
+        view.setPadding(scaledLeft, scaledTop, scaledRight, scaledBottom);
+    }
 
 
+    /**
+     * 描述：根据屏幕大小缩放.
+     *
+     * @param context the context
+     * @return the int
+     */
+    public static int scaleValue(Context context, float value) {
+        DisplayMetrics mDisplayMetrics = getDisplayMetrics(context);
+        //为了兼容尺寸小密度大的情况
+        if(mDisplayMetrics.scaledDensity > AbAppConfig.UI_DENSITY){
+            //密度
+            if(mDisplayMetrics.widthPixels > AbAppConfig.UI_WIDTH){
+                value = value*(1.3f - 1.0f/mDisplayMetrics.scaledDensity);
+            }else if(mDisplayMetrics.widthPixels < AbAppConfig.UI_WIDTH){
+                value = value*(1.0f - 1.0f/mDisplayMetrics.scaledDensity);
+            }
+        }
+        return scale(mDisplayMetrics.widthPixels,
+                mDisplayMetrics.heightPixels, value);
+    }
+
+
+    /**
+     * 描述：根据屏幕大小缩放.
+     *
+     * @param displayWidth the display width
+     * @param displayHeight the display height
+     * @param pxValue the px value
+     * @return the int
+     */
+    public static int scale(int displayWidth, int displayHeight, float pxValue) {
+        if(pxValue == 0 ){
+            return 0;
+        }
+        float scale = 1;
+        try {
+            float scaleWidth = (float) displayWidth / AbAppConfig.UI_WIDTH;
+            float scaleHeight = (float) displayHeight / AbAppConfig.UI_HEIGHT;
+            scale = Math.min(scaleWidth, scaleHeight);
+        } catch (Exception e) {
+        }
+        return Math.round(pxValue * scale + 0.5f);
+    }
+
+    /**
+     * 获取屏幕尺寸与密度.
+     *
+     * @param context the context
+     * @return mDisplayMetrics
+     */
+    public static DisplayMetrics getDisplayMetrics(Context context) {
+        Resources mResources;
+        if (context == null){
+            mResources = Resources.getSystem();
+
+        }else{
+            mResources = context.getResources();
+        }
+        DisplayMetrics mDisplayMetrics = mResources.getDisplayMetrics();
+        return mDisplayMetrics;
+    }
+
+    /**
+     * 测量这个view
+     * 最后通过getMeasuredWidth()获取宽度和高度.
+     * @param view 要测量的view
+     * @return 测量过的view
+     */
+    public static void measureView(View view) {
+        ViewGroup.LayoutParams p = view.getLayoutParams();
+        if (p == null) {
+            p = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+
+        int childWidthSpec = ViewGroup.getChildMeasureSpec(0, 0 + 0, p.width);
+        int lpHeight = p.height;
+        int childHeightSpec;
+        if (lpHeight > 0) {
+            childHeightSpec = View.MeasureSpec.makeMeasureSpec(lpHeight,
+                    View.MeasureSpec.EXACTLY);
+        } else {
+            childHeightSpec = View.MeasureSpec.makeMeasureSpec(0,
+                    View.MeasureSpec.UNSPECIFIED);
+        }
+        view.measure(childWidthSpec, childHeightSpec);
+    }
+
+    /**
+     * 缩放文字大小,这样设置的好处是文字的大小不和密度有关，
+     * 能够使文字大小在不同的屏幕上显示比例正确
+     * @param textView button
+     * @param sizePixels px值
+     * @return
+     */
+    public static void setTextSize(TextView textView, float sizePixels) {
+        float scaledSize = scaleTextValue(textView.getContext(),sizePixels);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,scaledSize);
+    }
+
+
+    /**
+     * 描述：根据屏幕大小缩放文本.
+     *
+     * @param context the context
+     * @return the int
+     */
+    public static int scaleTextValue(Context context, float value) {
+        DisplayMetrics mDisplayMetrics = getDisplayMetrics(context);
+        //为了兼容尺寸小密度大的情况
+        if(mDisplayMetrics.scaledDensity > 2){
+            //缩小到密度分之一
+            //value = value*(1.1f - 1.0f/mDisplayMetrics.scaledDensity);
+        }
+        return scale(mDisplayMetrics.widthPixels,
+                mDisplayMetrics.heightPixels, value);
+    }
 
 
 

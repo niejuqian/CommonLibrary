@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.laonie.common.functions.Action1;
+import com.laonie.common.functions.Action2;
 
 import cn.bingoogolapple.qrcode.core.BGAQRCodeUtil;
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
@@ -43,7 +45,7 @@ public class CreateQrImage {
      * @param content 内容
      * @param callback 返回
      */
-    public static void createQrImage(Context context, String content, QrImgCallback2<Bitmap> callback) {
+    public static void createQrImage(Context context, String content, Action2<Bitmap,String> callback) {
         createQrImage(context, content, DEFAULT_COLOR, callback);
     }
 
@@ -55,7 +57,7 @@ public class CreateQrImage {
      * @param callback 回调 success-成功 error-失败
      * @return
      */
-    public static void createQrImage(Context context, String content, ImageView imageView, QrImgCallback<String> callback) {
+    public static void createQrImage(Context context, String content, ImageView imageView, Action1<String> callback) {
         createQrImage(context, content, DEFAULT_COLOR, imageView, callback);
     }
 
@@ -78,7 +80,7 @@ public class CreateQrImage {
      * @param imageView
      * @param callback
      */
-    public static void createQrImageWithLogo(Context context, String content,int logoResId,ImageView imageView, QrImgCallback<String> callback) {
+    public static void createQrImageWithLogo(Context context, String content,int logoResId,ImageView imageView, Action1<String> callback) {
         createQrImageWithLogo(context, content, DEFAULT_COLOR, logoResId, imageView, callback);
     }
 
@@ -89,7 +91,7 @@ public class CreateQrImage {
      * @param logoResId logo资源
      * @param callback 回调 bitmap
      */
-    public static void createQrImageWithLogo(Context context, String content,int logoResId, QrImgCallback<Bitmap> callback) {
+    public static void createQrImageWithLogo(Context context, String content,int logoResId, Action1<Bitmap> callback) {
         createQrImageWithLogo(context, content, DEFAULT_COLOR, logoResId, callback);
     }
 
@@ -101,7 +103,7 @@ public class CreateQrImage {
      * @param logoResId 下载失败时默认Logo资源
      * @param callback 回调 bitmap
      */
-    public static void createQrImageWithHttp(Context context,String content,String fileUrl,int logoResId,QrImgCallback<Bitmap> callback) {
+    public static void createQrImageWithHttp(Context context,String content,String fileUrl,int logoResId,Action1<Bitmap> callback) {
         createQrImageWithHttp(context, content, DEFAULT_COLOR, fileUrl, logoResId, callback);
     }
 
@@ -114,7 +116,7 @@ public class CreateQrImage {
      * @param imageView 显示图片的view
      * @param callback 回调 bitmap
      */
-    public static void createQrImageWithHttp(Context context,String content,String fileUrl,int logoResId,ImageView imageView,QrImgCallback<String> callback) {
+    public static void createQrImageWithHttp(Context context,String content,String fileUrl,int logoResId,ImageView imageView,Action1<String> callback) {
         createQrImageWithHttp(context,content,DEFAULT_COLOR,fileUrl,logoResId,imageView,callback);
     }
 
@@ -128,7 +130,7 @@ public class CreateQrImage {
      * @param color 二维码颜色 '#ffffff'
      * @param callback 返回 bitmap
      */
-    public static void createQrImage(final Context context, final String content, final String color, final QrImgCallback2<Bitmap> callback) {
+    public static void createQrImage(final Context context, final String content, final String color, final Action2<Bitmap,String> callback) {
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -153,7 +155,7 @@ public class CreateQrImage {
      * @param callback 回调 success-成功 error-失败
      * @return
      */
-    public static void createQrImage(final Context context, final String content, final String color,final ImageView imageView, final QrImgCallback<String> callback) {
+    public static void createQrImage(final Context context, final String content, final String color,final ImageView imageView, final Action1<String> callback) {
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -205,7 +207,7 @@ public class CreateQrImage {
     /**
      *
      */
-    public static void createQrImageWithLogo(final Context context, final String content, final String color, final int logoResId, final QrImgCallback<Bitmap> callback) {
+    public static void createQrImageWithLogo(final Context context, final String content, final String color, final int logoResId, final Action1<Bitmap> callback) {
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -229,7 +231,7 @@ public class CreateQrImage {
      * @param logoResId 中间logo资源
      * @param callback 返回 bitmap
      */
-    public static void createQrImageWithLogo(final Context context, final String content, final String color, final int logoResId,final ImageView imageView, final QrImgCallback<String> callback) {
+    public static void createQrImageWithLogo(final Context context, final String content, final String color, final int logoResId,final ImageView imageView, final Action1<String> callback) {
         new AsyncTask<Void, Void, Bitmap>() {
             @Override
             protected Bitmap doInBackground(Void... params) {
@@ -266,7 +268,7 @@ public class CreateQrImage {
      * @param color 二维码颜色 '#ffffff'
      * @param callback 返回 bitmap
      */
-    public static void createQrImageWithHttp(final Context context, final String content, final String color, final String fileUrl, final int logoResId, final QrImgCallback<Bitmap> callback) {
+    public static void createQrImageWithHttp(final Context context, final String content, final String color, final String fileUrl, final int logoResId, final Action1<Bitmap> callback) {
         Glide.with(context).load(fileUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap logoBitmap, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -284,7 +286,7 @@ public class CreateQrImage {
         });
     }
 
-    private static void createBitmap(Bitmap logoBitmap,Context context, int logoResId, String content, String color, QrImgCallback<Bitmap> callback) {
+    private static void createBitmap(Bitmap logoBitmap,Context context, int logoResId, String content, String color, Action1<Bitmap> callback) {
         if (null == logoBitmap) {
             logoBitmap = BitmapFactory.decodeResource(context.getResources(), logoResId);
         }
@@ -292,7 +294,7 @@ public class CreateQrImage {
         callback.call(bitmap);
     }
 
-    public static void createQrImageWithHttp(final Context context, final String content, final String color, final String fileUrl, final int logoResId, final ImageView imageView, final QrImgCallback<String> callback) {
+    public static void createQrImageWithHttp(final Context context, final String content, final String color, final String fileUrl, final int logoResId, final ImageView imageView, final Action1<String> callback) {
         Glide.with(context).load(fileUrl).asBitmap().into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(Bitmap logoBitmap, GlideAnimation<? super Bitmap> glideAnimation) {
@@ -307,7 +309,7 @@ public class CreateQrImage {
         });
     }
 
-    private static void createBitmap(Bitmap logoBitmap,Context context, int logoResId, String content, String color, ImageView imageView, QrImgCallback<String> callback) {
+    private static void createBitmap(Bitmap logoBitmap,Context context, int logoResId, String content, String color, ImageView imageView, Action1<String> callback) {
         if (null == logoBitmap) {
             logoBitmap = BitmapFactory.decodeResource(context.getResources(), logoResId);
         }

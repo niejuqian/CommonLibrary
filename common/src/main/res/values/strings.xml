@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">common</string>
+
+
+
+    <!-- 下拉刷新 -->
+    <string name="pulldownrefresh">下拉刷新</string>
+    <string name="refreshtime">刷新时间：</string>
+    <string name="lastrefreshtime">上次刷新时间：</string>
+    <string name="releasetorefresh">松开刷新</string>
+    <string name="refreshing">正在刷新</string>
+    <string name="thisrefreshtime">本次刷新时间：</string>
+    <string name="loading">正在加载...</string>
+    <string name="nodata">没有数据</string>
+    <!-- 下拉刷新end -->
 </resources>
