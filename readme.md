@@ -43,3 +43,7 @@ private void initRetrofit(){
     RetrofitControl.getSingleton().initRegrofit(builder);
 }
 ```
+
+### 展示
+- ![依赖效果](http://note.youdao.com/yws/public/resource/9ebef5d7fb785976a2e4759ea7df63ba/xmlnote/747C839CFF434B87B7E1E66A031D3CFC/4452)
+- ![项目存放目录](http://note.youdao.com/yws/public/resource/9ebef5d7fb785976a2e4759ea7df63ba/xmlnote/2E3BAEF687BB4D0CB22B23564653179E/4455)
