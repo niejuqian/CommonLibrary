@@ -123,7 +123,46 @@ public class TestActivity extends BaseAppCompatActivity implements AbPullToRefre
     }
 }
 ```
+- 添加公共亲求参数
+```java
+1.自定义参数类，可以分别继承BaseCommonHeaderParam和BaseCommonQueryParam
+    //如果是添加到Header中的，则继承BaseCommonHeaderParam，然后在属性上添加HeaderParam注解
+package com.laonie.bll.model;
 
+import com.laonie.common.annotation.HeaderParam;
+import com.laonie.common.network.param.BaseCommonHeaderParam;
+
+/**
+ * @AUTHOR : niejiuqian
+ * @DATETIME: 2017-09-08 18:13
+ * @DESCRIPTION:
+ */
+
+public class CommonHeaderParam extends BaseCommonHeaderParam {
+    @HeaderParam
+    private String version;
+    @HeaderParam
+    private String platform = "android";
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
+    }
+}
+    //如果是查询参数中的，则继承BaseCommonQueryParam，并在属性上添加QueryParam注解
+2.在初始化RetrofitControl时赋值给RetrofitControl.Builder
+```
 ### 展示
 - ![依赖效果](http://note.youdao.com/yws/public/resource/9ebef5d7fb785976a2e4759ea7df63ba/xmlnote/747C839CFF434B87B7E1E66A031D3CFC/4452)
 - ![项目存放目录](http://note.youdao.com/yws/public/resource/9ebef5d7fb785976a2e4759ea7df63ba/xmlnote/2E3BAEF687BB4D0CB22B23564653179E/4455)
