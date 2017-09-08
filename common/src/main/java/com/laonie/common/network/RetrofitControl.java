@@ -29,7 +29,7 @@ public class RetrofitControl {
     private Gson gson;
     private static final int TIME_OUT_TIME = 10;//超时时间
     private Retrofit retrofit;
-    private RetrofitBuilder builder;
+    private Builder builder;
     private static Map<String, Object> map = new HashMap<>();
 
     private RetrofitControl(){
@@ -52,7 +52,7 @@ public class RetrofitControl {
     private static class SingletonHolder{
         private final static RetrofitControl singleton = new RetrofitControl();
     }
-    public void initRegrofit(RetrofitBuilder builder){
+    public void initRegrofit(Builder builder){
         if (null == builder) {
             throw new NullPointerException("必要参数为空，请传入builder信息");
         }
@@ -86,7 +86,43 @@ public class RetrofitControl {
         this.commonParamsInterceptor.updateParams(params);
     }
 
-    public RetrofitBuilder getBuilder(){
+    public Builder getBuilder(){
         return this.builder;
+    }
+
+    public static class Builder {
+        //请求接口地址，最后字符必须是/
+        private String hostAddress;
+        //接口定义
+        private Class apiClass;
+        //公共参数[heander,query]
+        private CommonParam commonParam;
+
+        public String getHostAddress() {
+            return hostAddress;
+        }
+
+        public Builder setHostAddress(String hostAddress) {
+            this.hostAddress = hostAddress;
+            return this;
+        }
+
+        public Class getApiClass() {
+            return apiClass;
+        }
+
+        public Builder setApiClass(Class apiClass) {
+            this.apiClass = apiClass;
+            return this;
+        }
+
+        public CommonParam getCommonParam() {
+            return commonParam;
+        }
+
+        public Builder setCommonParam(CommonParam commonParam) {
+            this.commonParam = commonParam;
+            return this;
+        }
     }
 }
