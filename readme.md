@@ -4,6 +4,7 @@
 
 ### 包含组件
 - 基于`Retrofit+Okhttp+RxJava`网络请求封装
+- 版本更新,支持断点下载
 - `Activity`父类`BaseAppCompatActivity`
 - `ListView/GridView`公共适配器封装`CommonAdapter`
 - `RecyclerView`公共适配器封装`QuickAdapter`
@@ -162,6 +163,26 @@ public class CommonHeaderParam extends BaseCommonHeaderParam {
 }
     //如果是查询参数中的，则继承BaseCommonQueryParam，并在属性上添加QueryParam注解
 2.在初始化RetrofitControl时赋值给RetrofitControl.Builder
+```
+- 版本更新
+```java
+UpdateManager.create(this)
+        .setUrl(url)//设置检测版本url
+        .setWifiOnly(false)//是否仅在wifi下更新
+        .setCheckOnly(true)//是否之进行版本检测，不走后面流程
+        .setOnFailure(new UpdateAgent.OnFailureListener() {//更新异常回掉
+            @Override
+            public void onFailure(UpdateError error) {
+                ToastUtil.showToast(error.toString());
+            }
+        })
+        .setOnCheckFinish(new UpdateAgent.OnCheckFinishListener() {//版本检测结果回掉
+            @Override
+            public void onFinish(UpdateInfo info) {
+                ToastUtil.showToast("版本检测成功" + info.getUpdateContent());
+            }
+        })
+        .check();//开始检测
 ```
 ### 展示
 - ![依赖效果](http://note.youdao.com/yws/public/resource/9ebef5d7fb785976a2e4759ea7df63ba/xmlnote/747C839CFF434B87B7E1E66A031D3CFC/4452)
