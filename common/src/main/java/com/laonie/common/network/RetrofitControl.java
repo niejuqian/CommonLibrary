@@ -3,7 +3,7 @@ package com.laonie.common.network;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.laonie.common.network.callback.CommonParamsInterceptor;
-import com.laonie.common.network.param.CommonParam;
+import com.laonie.common.network.param.BaseCommonParam;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +82,7 @@ public class RetrofitControl {
      * 更新公共参数
      * @param params
      */
-    public void updateCommParams(CommonParam params){
+    public void updateCommParams(BaseCommonParam params){
         this.commonParamsInterceptor.updateParams(params);
     }
 
@@ -96,7 +96,7 @@ public class RetrofitControl {
         //接口定义
         private Class apiClass;
         //公共参数[heander,query]
-        private CommonParam commonParam;
+        private BaseCommonParam commonParam;
 
         public String getHostAddress() {
             return hostAddress;
@@ -116,11 +116,11 @@ public class RetrofitControl {
             return this;
         }
 
-        public CommonParam getCommonParam() {
+        public BaseCommonParam getCommonParam() {
             return commonParam;
         }
 
-        public Builder setCommonParam(CommonParam commonParam) {
+        public Builder setCommonParam(BaseCommonParam commonParam) {
             this.commonParam = commonParam;
             return this;
         }

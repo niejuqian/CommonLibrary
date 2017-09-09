@@ -5,9 +5,7 @@ import android.util.Log;
 import com.laonie.common.annotation.FormBodyParam;
 import com.laonie.common.annotation.HeaderParam;
 import com.laonie.common.annotation.QueryParam;
-import com.laonie.common.network.param.BaseCommonHeaderParam;
-import com.laonie.common.network.param.BaseCommonQueryParam;
-import com.laonie.common.network.param.CommonParam;
+import com.laonie.common.network.param.BaseCommonParam;
 import com.laonie.common.util.JsonUtils;
 import com.laonie.common.util.Logger;
 import com.laonie.common.util.StringUtils;
@@ -38,7 +36,7 @@ import okio.Buffer;
 
 public class CommonParamsInterceptor implements Interceptor {
     private static String TAG = CommonParamsInterceptor.class.getSimpleName();
-    private CommonParam commonParam;
+    private BaseCommonParam commonParam;
     @Override
     public Response intercept(Chain chain) throws IOException {
         long start = System.currentTimeMillis();
@@ -96,15 +94,14 @@ public class CommonParamsInterceptor implements Interceptor {
 
 
     private void buildFormParams(FormBody.Builder builder,HashMap<String,String> rootMap) throws IllegalAccessException {
-        if (null != commonParam && commonParam.getQueryParam() != null) {
-            BaseCommonQueryParam queryParam = commonParam.getQueryParam();
-            Field[] fields = queryParam.getClass().getDeclaredFields();
+        if (null != commonParam ) {
+            Field[] fields = commonParam.getClass().getDeclaredFields();
             if (null != fields && fields.length > 0) {
                 for (int i = 0; i < fields.length; i++) {
                     Field field = fields[i];
                     String fieldName = field.getName();
                     field.setAccessible(true);
-                    Object fieldValue = field.get(queryParam);
+                    Object fieldValue = field.get(commonParam);
                     FormBodyParam param = field.getAnnotation(FormBodyParam.class);
                     if (null != fieldValue && param != null) {
                         builder.add(fieldName,fieldValue.toString());
@@ -132,15 +129,14 @@ public class CommonParamsInterceptor implements Interceptor {
      * @throws IllegalAccessException
      */
     private void buildQueryParams(HttpUrl.Builder builder) throws IllegalAccessException {
-        if (null != commonParam && commonParam.getQueryParam() != null) {
-            BaseCommonQueryParam queryParam = commonParam.getQueryParam();
-            Field[] fields = queryParam.getClass().getDeclaredFields();
+        if (null != commonParam) {
+            Field[] fields = commonParam.getClass().getDeclaredFields();
             if (null != fields && fields.length > 0) {
                 for (int i = 0; i < fields.length; i++) {
                     Field field = fields[i];
                     String fieldName = field.getName();
                     field.setAccessible(true);
-                    Object fieldValue = field.get(queryParam);
+                    Object fieldValue = field.get(commonParam);
                     QueryParam param = field.getAnnotation(QueryParam.class);
                     if (null != fieldValue && param != null) {
                         builder.addQueryParameter(fieldName, fieldValue.toString());
@@ -156,15 +152,14 @@ public class CommonParamsInterceptor implements Interceptor {
      * @throws IllegalAccessException
      */
     private void buildHeaderParams(Request.Builder builder) throws IllegalAccessException {
-        if (null != commonParam && null != commonParam.getHeaderParam()) {
-            BaseCommonHeaderParam headerParam = commonParam.getHeaderParam();
-            Field[] fields = headerParam.getClass().getDeclaredFields();
+        if (null != commonParam) {
+            Field[] fields = commonParam.getClass().getDeclaredFields();
             if (null != fields && fields.length > 0) {
                 for (int i = 0; i < fields.length; i++) {
                     Field field = fields[i];
                     String fieldName = field.getName();
                     field.setAccessible(true);
-                    Object fieldValue = field.get(headerParam);
+                    Object fieldValue = field.get(commonParam);
                     HeaderParam param = field.getAnnotation(HeaderParam.class);
                     if (null != fieldValue && !"".equalsIgnoreCase(fieldValue.toString()) && param != null) {
                         builder.addHeader(fieldName, fieldValue.toString());
@@ -178,7 +173,7 @@ public class CommonParamsInterceptor implements Interceptor {
      * 更新公共参数
      * @param commonParam 公共参数
      */
-    public void updateParams(CommonParam commonParam) {
+    public void updateParams(BaseCommonParam commonParam) {
         this.commonParam = commonParam;
     }
 
