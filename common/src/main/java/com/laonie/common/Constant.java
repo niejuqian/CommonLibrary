@@ -8,4 +8,9 @@ package com.laonie.common;
 
 public interface Constant {
     String HTTP = "http";
+    String HTTPS = "https";
+
+    String ACTION_KEY = "action";
+    String DATA_KEY = "data";
+    String CODE_KEY = "code";
 }

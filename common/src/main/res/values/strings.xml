@@ -13,4 +13,13 @@
     <string name="loading">正在加载...</string>
     <string name="nodata">没有数据</string>
     <!-- 下拉刷新end -->
+
+
+    <string name="app_upgrade_title">应用更新</string>
+    <!-- button text -->
+    <string name="btn_ok">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_now_upgrade">立即更新</string>
+    <string name="btn_upgrade">更新</string>
+    <string name="btn_confirm_submit">确认提交</string>
 </resources>
