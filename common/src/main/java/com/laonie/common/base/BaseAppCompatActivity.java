@@ -6,11 +6,9 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
@@ -33,22 +31,16 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     private boolean isDealKeyboardHide = true;
     private LoadingDialog loadingDialog;
     protected void onCreate(@Nullable Bundle savedInstanceState, int layoutId) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         //禁止横屏显示
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
         setContentView(layoutId);
         ButterKnife.bind(this);
-        ActionBar actionBar = getSupportActionBar();
-        if (null != actionBar) {
-            actionBar.hide();
-        }
-        mActivity = this;
         AppManager.getAppManager().addActivity(this);
         TAG = this.getClass().getSimpleName();
-        initData();
         initView();
         setListener();
+        initData();
     }
 
     protected void initData(){

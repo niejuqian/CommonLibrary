@@ -1,5 +1,7 @@
 package com.laonie.common.network;
 
+import android.app.Activity;
+
 import com.laonie.common.enuns.RespCodeEnum;
 import com.laonie.common.network.callback.HttpResult;
 import com.laonie.common.network.exception.BllException;
@@ -16,12 +18,13 @@ import rx.schedulers.Schedulers;
  */
 
 public class RxUtil {
-    private static <T> Observable<T> observable(Observable<HttpResult<T>> observable) {
+    private static <T> Observable<T> observable(Observable<HttpResult<T>> observable, Activity activity) {
         return observable
+                .lift(new BindActivityOperator<HttpResult<T>>(activity)) // 绑定activity生命周期
                 .flatMap(new Func1<HttpResult<T>, Observable<T>>() {
                     @Override
                     public Observable<T> call(final HttpResult<T> httpResult) {
-                        if (httpResult.getCode() != RespCodeEnum.SUCCESS.getCode()) {
+                        if (!httpResult.isSuccess()) {
                             return Observable.error(new BllException(httpResult.getCode(),httpResult.getMsg()));
                         } else {
                             return Observable.just(httpResult.getData());
@@ -31,6 +34,9 @@ public class RxUtil {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+    private static <T> Observable<T> observable(Observable<HttpResult<T>> observable) {
+        return observable(observable,null);
+    }
 
     /**
      * 会切换线程
@@ -38,7 +44,17 @@ public class RxUtil {
      * @return
      */
     public static <T> Observable.Transformer<HttpResult<T>,T> tTransformer(){
-        return httpResultObservable -> observable(httpResultObservable);
+        return tTransformer(null);
+    }
+
+
+    /**
+     * 会切换线程
+     * @param <T>
+     * @return
+     */
+    public static <T> Observable.Transformer<HttpResult<T>,T> tTransformer(Activity activity){
+        return httpResultObservable -> observable(httpResultObservable,activity);
     }
 
     private static <T> Observable<T> observable1(Observable<HttpResult<T>> observable) {
@@ -46,7 +62,7 @@ public class RxUtil {
                 .flatMap(new Func1<HttpResult<T>, Observable<T>>() {
                     @Override
                     public Observable<T> call(final HttpResult<T> httpResult) {
-                        if (httpResult.getCode() != RespCodeEnum.SUCCESS.getCode()) {
+                        if (!httpResult.isSuccess()) {
                             return Observable.error(new BllException(httpResult.getCode(),httpResult.getMsg()));
                         } else {
                             return Observable.just(httpResult.getData());
@@ -65,11 +81,13 @@ public class RxUtil {
     }
 
     public <T> Observable valid(HttpResult<T> result,Observable<T> next) {
-        if (null == result || !result.isSuccess() || null == result.getData()) {
-            return Observable.error(new BllException(result.getCode(),result.getMsg()));
-        }else {
-            return next;
+        if (null == result) {
+            return Observable.error(new BllException(RespCodeEnum.SYS_ERROR));
         }
+        if (!result.isSuccess() || null == result.getData()) {
+            return Observable.error(new BllException(result.getCode(),result.getMsg()));
+        }
+        return next;
     }
 
     public <T> Observable errorObservable(HttpResult<T> result) {
