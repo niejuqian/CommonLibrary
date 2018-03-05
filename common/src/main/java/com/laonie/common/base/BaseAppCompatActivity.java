@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.laonie.common.dlg.LoadingDialog;
+import com.laonie.common.network.SubscriberManager;
 import com.laonie.common.util.AppManager;
 import com.laonie.common.util.Logger;
 
@@ -173,6 +174,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
         super.onDestroy();
         Logger.e(TAG,"==============onDestory");
         hideLoading();
+        SubscriberManager.getSingleton().onDestory(this);
         AppManager.getAppManager().finishActivity(this);
     }
 }
