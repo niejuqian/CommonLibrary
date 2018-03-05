@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@color/tx_black"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp17"
+            android:layout_marginLeft="@dimen/dp17">
+
+            <LinearLayout
+                android:id="@+id/back_ll"
+                android:layout_width="@dimen/dp180"
+                android:layout_height="@dimen/dp50"
+                android:paddingRight="@dimen/dp20"
+                android:orientation="horizontal"
+                android:descendantFocusability="blocksDescendants">
+                <ImageButton
+                    android:id="@+id/back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp50"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:background="@null"
+                    android:clickable="false"
+                    android:src="@mipmap/icon_back" />
+
+                <TextView
+                    android:id="@+id/tv_back_tx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/dp16"
+                    android:textSize="@dimen/sp15"
+                    android:text="返回"
+                    android:textColor="@color/white"
+                    android:gravity="center_vertical"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/titleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:background="@drawable/shape_white_coner"
+                android:layout_centerInParent="true"
+                android:orientation="horizontal"
+                android:id="@+id/ll_tab"
+                android:layout_width="@dimen/dp304"
+                android:layout_height="@dimen/dp50">
+                <TextView
+                    android:gravity="center"
+                    android:textSize="@dimen/sp28"
+                    android:id="@+id/tv_left"
+                    android:layout_width="@dimen/dp152"
+                    android:layout_height="match_parent"/>
+                <TextView
+                    android:gravity="center"
+                    android:textSize="@dimen/sp28"
+                    android:id="@+id/tv_right"
+                    android:layout_width="@dimen/dp152"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+            <TextView
+                android:id="@+id/right_text_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/sp30"
+                android:text=""
+                android:visibility="visible"
+                android:textColor="@color/white"/>
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.Toolbar>
+
+</LinearLayout>

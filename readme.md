@@ -11,7 +11,7 @@
 - `ListView/GridView`公共适配器封装`CommonAdapter`
 - `RecyclerView`公共适配器封装`QuickAdapter`
 - 提供了大部分帮助类（日期转换/数字格式化/字符串处理等）
-- 基于`Gidle`图片加载再封装`ImageLoader`
+- 基于`Glide`图片加载再封装`ImageLoader`
 - 基于`ZXing`扫码组件`ScanActivity`
 - 基于`ZXing`生成二维码组件`CreateQrImage`
 - 弹性`ScrollView`组件`ReboundScrollView`

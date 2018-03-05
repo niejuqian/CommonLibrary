@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.laonie.common.listener.ItemClickListener;
+import com.laonie.common.view.EmptyViewHolder;
+
 import java.util.List;
 
 /**
@@ -16,7 +19,7 @@ import java.util.List;
  *      RecyclerView公共适配器父类
  */
 
-public abstract class QuickAdapter<T> extends RecyclerView.Adapter<QuickAdapter.VH>{
+public abstract class QuickAdapter<T> extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     /**
      * 数据源
@@ -28,6 +31,14 @@ public abstract class QuickAdapter<T> extends RecyclerView.Adapter<QuickAdapter.
     }
 
     /**
+     * 列表item点击事件
+     */
+    private ItemClickListener<T> itemClickListener;
+
+    private View emptyView;
+    private static final int EMPTY_VIEW = 1;
+
+    /**
      * 获取布局
      * @return
      */
@@ -36,22 +47,50 @@ public abstract class QuickAdapter<T> extends RecyclerView.Adapter<QuickAdapter.
     public abstract void bindViewHolder(VH viewHolder,T data,int position);
 
     @Override
-    public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return VH.get(parent,getLayoutId());
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == EMPTY_VIEW && emptyView != null) {
+            return new EmptyViewHolder(emptyView);
+        } else {
+            return VH.get(parent,getLayoutId());
+        }
     }
 
     @Override
-    public void onBindViewHolder(VH holder, int position) {
-        bindViewHolder(holder,getItem(position),position);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof VH) {
+            VH vh = (VH) holder;
+            T data = getItem(position);
+            if (null == data) return;
+            bindViewHolder(vh,data,position);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return null != mDatas ? mDatas.size() : 0;
+        return null != mDatas && mDatas.size() > 0 ? mDatas.size() : 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return null == mDatas || mDatas.size() == 0 ? EMPTY_VIEW : super.getItemViewType(position);
     }
 
     public T getItem(int position){
-        return null != mDatas ? mDatas.get(position) : null;
+        return null != mDatas && mDatas.size() > 0 ? mDatas.get(position) : null;
+    }
+
+    public void setEmptyView(View emptyView) {
+        this.emptyView = emptyView;
+    }
+
+    public void setItemClickListener(ItemClickListener<T> itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
+
+    protected void onItemClick(T data) {
+        if (null != itemClickListener) {
+            itemClickListener.itemClick(data);
+        }
     }
 
     public static class VH extends RecyclerView.ViewHolder{

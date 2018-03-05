@@ -212,7 +212,10 @@
     <dimen name="dp99">99dp</dimen>
     <dimen name="dp100">100dp</dimen>
     <dimen name="dp120">120dp</dimen>
+    <dimen name="dp152">152dp</dimen>
     <dimen name="dp155">155dp</dimen>
+    <dimen name="dp180">180dp</dimen>
     <dimen name="dp200">200dp</dimen>
     <dimen name="dp201">201dp</dimen>
+    <dimen name="dp304">304dp</dimen>
 </resources>

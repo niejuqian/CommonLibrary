@@ -16,6 +16,7 @@
 package com.laonie.common.view.refresh;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -331,8 +332,10 @@ public class AbPullToRefreshView extends LinearLayout {
 				RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
 				if (layoutManager instanceof LinearLayoutManager){
 					LinearLayoutManager linearManager = (LinearLayoutManager) layoutManager;
+					int firstPosition = linearManager.findFirstVisibleItemPosition();
 					lastPosition = linearManager.findLastVisibleItemPosition();
-					lastChild = mRecyclerView.getChildAt(lastPosition);
+					int currentPosition = lastPosition - firstPosition;
+					lastChild = mRecyclerView.getChildAt(currentPosition);
 				}
 				if (lastChild == null) {
 					return false;
